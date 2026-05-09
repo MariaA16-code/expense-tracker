@@ -1,0 +1,242 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #0a0a0f;
+  color: #f1f0f7;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #a78bfa;
+  margin-bottom: 0.3rem;
+}
+
+header p {
+  color: #9ca3b0;
+  font-size: 0.95rem;
+}
+
+/* ── SUMMARY BAR ── */
+.summary-bar {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.summary-item {
+  flex: 1;
+  background: rgba(139,92,246,0.08);
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.summary-item span {
+  color: #9ca3b0;
+  font-size: 0.9rem;
+}
+
+.summary-item strong {
+  color: #a78bfa;
+  font-size: 1.3rem;
+}
+
+/* ── FORM CARD ── */
+.form-card {
+  background: #0f0f1a;
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-card h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: #a78bfa;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  color: #9ca3b0;
+}
+
+.form-group input,
+.form-group select {
+  padding: 0.6rem 0.9rem;
+  background: #13131f;
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 8px;
+  color: #f1f0f7;
+  font-size: 0.9rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #8b5cf6;
+}
+
+.form-group select option {
+  background: #13131f;
+}
+
+button {
+  padding: 0.7rem 1.8rem;
+  background: linear-gradient(135deg, #8b5cf6, #ec4899);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: opacity 0.2s;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.filter-bar label {
+  color: #9ca3b0;
+  font-size: 0.88rem;
+}
+
+.filter-bar select {
+  padding: 0.5rem 0.9rem;
+  background: #13131f;
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 8px;
+  color: #f1f0f7;
+  font-size: 0.88rem;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+}
+
+/* ── TABLE ── */
+.table-wrapper {
+  background: #0f0f1a;
+  border: 1px solid rgba(139,92,246,0.2);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: rgba(139,92,246,0.12);
+}
+
+thead th {
+  padding: 0.9rem 1rem;
+  text-align: left;
+  font-size: 0.82rem;
+  color: #a78bfa;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+tbody tr {
+  border-top: 1px solid rgba(139,92,246,0.08);
+  transition: background 0.2s;
+}
+
+tbody tr:hover {
+  background: rgba(139,92,246,0.05);
+}
+
+tbody td {
+  padding: 0.85rem 1rem;
+  font-size: 0.88rem;
+  color: #f1f0f7;
+}
+
+.empty {
+  text-align: center;
+  color: #9ca3b0;
+  padding: 2rem !important;
+}
+
+/* ── DELETE BUTTON ── */
+.btn-delete {
+  padding: 0.35rem 0.85rem;
+  background: rgba(239,68,68,0.15);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #f87171;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-delete:hover {
+  background: rgba(239,68,68,0.25);
+}
+
+/* ── CATEGORY BADGE ── */
+.badge {
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background: rgba(139,92,246,0.15);
+  border: 1px solid rgba(139,92,246,0.25);
+  color: #a78bfa;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  .form-row { grid-template-columns: 1fr; }
+  .summary-bar { flex-direction: column; }
+}
