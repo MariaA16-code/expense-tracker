@@ -32,6 +32,8 @@ python app.py
 6. Open browser
 http://127.0.0.1:5000
 
+![Expense Tracker Preview](screenshots/preview.png)
+
 ## Author
 Marria Amir — Information Engineering Technology, Final Year
 University of Lahore
