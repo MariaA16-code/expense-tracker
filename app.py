@@ -5,7 +5,6 @@ from datetime import datetime
 app = Flask(__name__)
 
 # ── DATABASE CONFIG ──
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:M%40riaSQL%2189@localhost/expense_tracker'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
