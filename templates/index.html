@@ -1,112 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Expense Tracker</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Expense Analytics Dashboard for analysing personal spending in RM.">
+  <title>Expense Analytics Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-
-  <div class="container">
-
-    <header>
-      <h1>💸 Expense Tracker</h1>
-      <p>Track your daily spending</p>
+  <main class="container">
+    <header class="dashboard-header">
+      <div>
+        <p class="eyebrow">PERSONAL FINANCE INTELLIGENCE</p>
+        <h1>Expense Analytics <span>Dashboard</span></h1>
+        <p class="subtitle">Explore where your money goes and make each ringgit work harder.</p>
+      </div>
+      <button type="button" class="button secondary" id="exportButton">Export CSV</button>
     </header>
 
-    <!-- SUMMARY -->
-    <div class="summary-bar">
-      <div class="summary-item">
-        <span>Total Spent</span>
-        <strong id="totalAmount">RM 0.00</strong>
-      </div>
-      <div class="summary-item">
-        <span>Total Entries</span>
-        <strong id="totalCount">0</strong>
-      </div>
-    </div>
-
-    <!-- FORM -->
-    <div class="form-card">
-      <h2>Add Expense</h2>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Title</label>
-          <input type="text" id="title" placeholder="e.g. Lunch"/>
-        </div>
-        <div class="form-group">
-          <label>Amount (RM)</label>
-          <input type="number" id="amount" placeholder="0.00" step="0.01" min="0"/>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Category</label>
-          <select id="category">
-            <option value="">Select category</option>
-            <option value="Food">Food</option>
-            <option value="Transport">Transport</option>
-            <option value="Shopping">Shopping</option>
-            <option value="Health">Health</option>
-            <option value="Education">Education</option>
-            <option value="Entertainment">Entertainment</option>
-            <option value="Bills">Bills</option>
-            <option value="Other">Other</option>
+    <section class="filter-panel card" aria-label="Expense filters">
+      <div class="section-heading"><h2>Analyse expenses</h2><p>Apply filters to update every metric and chart.</p></div>
+      <div class="filter-fields">
+        <label>Start date<input type="date" id="startDate"></label>
+        <label>End date<input type="date" id="endDate"></label>
+        <label>Category
+          <select id="filterCategory">
+            <option value="">All categories</option>
+            {% for category in categories %}<option value="{{ category }}">{{ category }}</option>{% endfor %}
           </select>
-        </div>
-        <div class="form-group">
-          <label>Date</label>
-          <input type="date" id="date"/>
+        </label>
+        <div class="filter-actions">
+          <button type="button" class="button" id="applyFilters">Apply filters</button>
+          <button type="button" class="text-button" id="resetFilters">Reset</button>
         </div>
       </div>
-      <div class="form-group">
-        <label>Note (optional)</label>
-        <input type="text" id="note" placeholder="Any extra details"/>
-      </div>
-      <button onclick="addExpense()">Add Expense</button>
-    </div>
+    </section>
 
-    <!-- FILTER -->
-    <div class="filter-bar">
-      <label>Filter by Category:</label>
-      <select id="filterCategory" onchange="filterExpenses()">
-        <option value="all">All</option>
-        <option value="Food">Food</option>
-        <option value="Transport">Transport</option>
-        <option value="Shopping">Shopping</option>
-        <option value="Health">Health</option>
-        <option value="Education">Education</option>
-        <option value="Entertainment">Entertainment</option>
-        <option value="Bills">Bills</option>
-        <option value="Other">Other</option>
-      </select>
-    </div>
+    <p id="statusMessage" class="status-message" role="status" aria-live="polite"></p>
 
-    <!-- TABLE -->
-    <div class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Amount</th>
-            <th>Category</th>
-            <th>Date</th>
-            <th>Note</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="expenseTable">
-          <tr id="emptyRow">
-            <td colspan="6" class="empty">No expenses yet. Add one above!</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+    <section class="kpi-grid" aria-label="Key spending indicators">
+      <article class="kpi-card"><span>Total spending</span><strong id="totalSpending">RM 0.00</strong><small>Filtered expenses</small></article>
+      <article class="kpi-card"><span>Average expense</span><strong id="averageExpense">RM 0.00</strong><small>Per transaction</small></article>
+      <article class="kpi-card"><span>Total transactions</span><strong id="transactionCount">0</strong><small>Within selection</small></article>
+      <article class="kpi-card"><span>Top category</span><strong id="topCategory">—</strong><small>Highest spending</small></article>
+    </section>
 
-  </div>
+    <section class="dashboard-grid charts-grid">
+      <article class="card chart-card"><div class="card-title"><h2>Spending by category</h2><p>Where your budget is going</p></div><canvas id="categoryChart" aria-label="Spending by category chart"></canvas></article>
+      <article class="card chart-card"><div class="card-title"><h2>Monthly spending trend</h2><p>Track movement over time</p></div><canvas id="trendChart" aria-label="Monthly spending trend chart"></canvas></article>
+      <article class="card chart-card"><div class="card-title"><h2>Expense count by category</h2><p>Transaction frequency</p></div><canvas id="countChart" aria-label="Expense count by category chart"></canvas></article>
+      <article class="card insights-card"><div class="card-title"><h2>Spending insights</h2><p>Useful descriptive takeaways</p></div><ul id="insightsList"></ul></article>
+    </section>
 
+    <section class="dashboard-grid lower-grid">
+      <article class="card form-card">
+        <div class="card-title"><h2>Add an expense</h2><p>Record a transaction to refresh your analysis.</p></div>
+        <form id="expenseForm" novalidate>
+          <div class="form-grid">
+            <label>Title <input type="text" id="title" maxlength="100" required placeholder="e.g. Team lunch"></label>
+            <label>Amount (RM) <input type="number" id="amount" required min="0.01" step="0.01" placeholder="0.00"></label>
+            <label>Category <select id="category" required><option value="">Select category</option>{% for category in categories %}<option value="{{ category }}">{{ category }}</option>{% endfor %}</select></label>
+            <label>Date <input type="date" id="date" required></label>
+          </div>
+          <label>Note <input type="text" id="note" maxlength="255" placeholder="Optional context"></label>
+          <p id="formError" class="form-error" role="alert"></p>
+          <button class="button" type="submit">Add expense</button>
+        </form>
+      </article>
+
+      <article class="card recent-card">
+        <div class="card-title"><h2>Recent expenses</h2><p id="tableSummary">Latest filtered transactions</p></div>
+        <div class="table-wrapper"><table>
+          <thead><tr><th>Expense</th><th>Category</th><th>Date</th><th>Amount</th><th><span class="sr-only">Action</span></th></tr></thead>
+          <tbody id="expenseTable"></tbody>
+        </table></div>
+      </article>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
